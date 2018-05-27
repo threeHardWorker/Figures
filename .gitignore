@@ -1,0 +1,8 @@
+.pyc
+*pyc
+pyc
+gmon.out
+.user
+*user*
+.user.*
+*.user.*

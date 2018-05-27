@@ -1,0 +1,2 @@
+cd ~/api
+python ./cppmath6.py $1888 20171108 /app/data/10s_candle_bindata $2 $3
