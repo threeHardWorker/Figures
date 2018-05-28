@@ -5,8 +5,9 @@ m_predict_len = 128
 
 
 class Artist:
-    def __init__(self, m12, ax, name, level):
+    def __init__(self, m12, dcplp, ax, name, level):
         self.m12 = m12
+        self.dcplp = dcplp
         self.name = name
         self.ax = ax
         self.level = level
@@ -27,17 +28,6 @@ class Artist:
         self.ax.set_ylim([min(self.price[0: m_data_len]),
                           max(self.price[0: m_data_len])])
 
-        colors = [(13.0 / 255.0, 57.0 / 255.0, 0.0 / 255.0),
-                  (21.0 / 255.0, 96.0 / 255.0, 0.0 / 255.0),
-                  (29.0 / 255.0, 125.0 / 255.0, 0.0 / 255.0),
-                  (35.0 / 255.0, 155.0 / 255.0, 0.0 / 255.0),
-                  (44.0 / 255.0, 196.0 / 255.0, 0.0 / 255.0),
-                  (51.0 / 255.0, 227.0 / 255.0, 0.0 / 255.0),
-                  (63.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0),
-                  (97.0 / 255.0, 255.0 / 255.0, 51.0 / 255.0),
-                  (156.0 / 255.0, 255.0 / 255.0, 128.0 / 255.0),
-                  (194.0 / 255.0, 255.0 / 255.0, 176.0 / 255.0)
-                  ]
         change_pnt_color = (128.0 / 255.0, 28.0 / 255.0, 188.0 / 255.0)
 
         self.lmax, = self.ax.plot([], [], lw=1, color='green')
@@ -48,9 +38,10 @@ class Artist:
         self.appx, = self.ax.plot([], [], lw=1, color='black')
         self.lNow, = self.ax.plot([], [], lw=1, color='green')
         self.lBest_pl, = self.ax.plot([], [], lw=1, color=change_pnt_color)
+        self.lTop, = self.ax.plot([], [], lw=1, color='black')
 
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
-                      self.lBest_pl]
+                      self.lBest_pl, self.lTop]
 
     def init_animation(self):
         for line in self.lines:
@@ -117,11 +108,12 @@ class Artist:
         else:
             self.lBest_pl.set_data([], [])
 
-    def update_extreme_lo(self, cp):
-        pass
-
-    def update_extreme_appx(self, cp):
-        pass
+        self.top_pos = self.dcplp.get_top_pos(self.level)
+        if self.top_pos > 0:
+            self.lTop.set_data([self.top_pos, self.top_pos],
+                               list(self.ax.get_ylim()))
+        else:
+            self.lTop.set_data([], [])
 
     def animate(self, cur_pos, show_future):
         # update the price data
@@ -150,7 +142,3 @@ class Artist:
         self.update_limite(xlim, ylim, cp, show_future)
 
         self.update_lines(cp, show_future)
-
-    # def clean_predict_lines(self):
-    #     for line in self.pls:
-    #         line.set_data([], [])

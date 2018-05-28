@@ -6,3 +6,5 @@ gmon.out
 *user*
 .user.*
 *.user.*
+.idea
+.idea/
