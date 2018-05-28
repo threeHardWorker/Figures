@@ -41,7 +41,7 @@ class SubplotAnimation9(animation.TimedAnimation):
 
         self.art = []
         for i in range(12):
-            self.art.append(artist9.Artist9(m12, self.ax[i], "art" + str(i), i))
+            self.art.append(artist9.Artist9(m12, self.dcplp, self.ax[i], "art" + str(i), i))
 
         self.anim_interval = 10
 

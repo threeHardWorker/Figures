@@ -5,8 +5,9 @@ m_predict_len = 128
 
 
 class Artist9:
-    def __init__(self, m12, ax, name, level):
+    def __init__(self, m12, dcplp, ax, name, level):
         self.m12 = m12
+        self.dcplp = dcplp
         self.name = name
         self.ax = ax
         self.level = level
@@ -27,17 +28,6 @@ class Artist9:
         self.ax.set_ylim([min(self.price[0: m_data_len]),
                           max(self.price[0: m_data_len])])
 
-        colors = [(13.0 / 255.0, 57.0 / 255.0, 0.0 / 255.0),
-                  (21.0 / 255.0, 96.0 / 255.0, 0.0 / 255.0),
-                  (29.0 / 255.0, 125.0 / 255.0, 0.0 / 255.0),
-                  (35.0 / 255.0, 155.0 / 255.0, 0.0 / 255.0),
-                  (44.0 / 255.0, 196.0 / 255.0, 0.0 / 255.0),
-                  (51.0 / 255.0, 227.0 / 255.0, 0.0 / 255.0),
-                  (63.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0),
-                  (97.0 / 255.0, 255.0 / 255.0, 51.0 / 255.0),
-                  (156.0 / 255.0, 255.0 / 255.0, 128.0 / 255.0),
-                  (194.0 / 255.0, 255.0 / 255.0, 176.0 / 255.0)
-                  ]
         change_pnt_color = (128.0 / 255.0, 28.0 / 255.0, 188.0 / 255.0)
 
         self.lmax, = self.ax.plot([], [], lw=1, color='green')
@@ -48,16 +38,17 @@ class Artist9:
         self.appx, = self.ax.plot([], [], lw=1, color='black')
         self.lNow, = self.ax.plot([], [], lw=1, color='green')
         self.lBest_pl, = self.ax.plot([], [], lw=1, color=change_pnt_color)
+        self.lTop, = self.ax.plot([], [], lw=1, color='black')
 
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
-                      self.lBest_pl]
+                      self.lBest_pl, self.lTop]
 
     def init_animation(self):
         for line in self.lines:
             line.set_data([], [])
         return self.lines
 
-    def update_limite(self, xlim, ylim, cp, show_future):
+    def update_limit(self, xlim, cp, show_future):
         xlim[0] = cp - m_data_len
         xlim[1] = cp + m_predict_len
         self.ax.set_xlim(xlim)
@@ -84,26 +75,26 @@ class Artist9:
 
         if show_future:
             dlen = len(self.price[cp: cp + m_predict_len])
-            self.lFuture.set_data(self.allx[cp: cp + dlen], \
+            self.lFuture.set_data(self.allx[cp: cp + dlen],
                                   self.price[cp: cp + m_predict_len])
         else:
             self.lFuture.set_data([], [])
 
         first_ext_pos = self.m12.get_first_ext_pos(self.level)
         # print self.down_int, first_ext_pos, cp
-        self.lNow.set_data([first_ext_pos, cp - 1], \
+        self.lNow.set_data([first_ext_pos, cp - 1],
                            [self.price[first_ext_pos], self.price[cp - 1]])
 
         ap_hi_pos = self.m12.get_ap_hi_pos(self.level)
 
         self.predict = []
         self.m12.get_predict_line(self.predict, self.level)
-        self.lp_hi.set_data(self.allx[ap_hi_pos: ap_hi_pos + m_predict_len], \
+        self.lp_hi.set_data(self.allx[ap_hi_pos: ap_hi_pos + m_predict_len],
                             self.predict)
 
         x = []
         self.m12.get_approximate(x, cp, self.level)
-        self.appx.set_data(self.allx[cp - len(x): cp], x);
+        self.appx.set_data(self.allx[cp - len(x): cp], x)
 
         bpl = []
         pl = PredictLine()
@@ -114,17 +105,18 @@ class Artist9:
         else:
             self.lBest_pl.set_data([], [])
 
-    def update_extreme_lo(self, cp):
-        pass
-
-    def update_extreme_appx(self, cp):
-        pass
+        self.top_pos = self.dcplp.get_top_pos(self.level)
+        if self.top_pos > 0:
+            self.lTop.set_data([self.top_pos, self.top_pos],
+                               list(self.ax.get_ylim()))
+        else:
+            self.lTop.set_data([], [])
 
     def animate(self, cur_pos, show_future):
         cp = cur_pos / self.down_int - 1
-        xlim = list(self.ax.get_xlim())
-        ylim = list(self.ax.get_ylim())
-        self.update_limite(xlim, ylim, cp, show_future)
+        x_lim = list(self.ax.get_xlim())
+        # ylim = list(self.ax.get_ylim())
+        self.update_limit(x_lim, cp, show_future)
         self.update_lines(cp, show_future)
         return tuple(self.lines)
 
@@ -134,11 +126,7 @@ class Artist9:
             return
 
         xlim = list(self.ax.get_xlim())
-        ylim = list(self.ax.get_ylim())
-        self.update_limite(xlim, ylim, cp, show_future)
+        # ylim = list(self.ax.get_ylim())
+        self.update_limit(xlim, cp, show_future)
 
         self.update_lines(cp, show_future)
-
-    def clean_predict_lines(self):
-        for ppll in self.pls:
-            ppll.set_data([], [])
