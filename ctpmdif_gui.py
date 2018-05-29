@@ -46,7 +46,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 5 or len(sys.argv) > 7:
         print '''
               Usage: python ctpmdif_gui.py <instrument> <end the trade day>
-              <data file path> <config path> [r | start datetime]
+                                           <data file path> <config path>
               '''
         exit(0)
 
