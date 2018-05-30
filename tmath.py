@@ -46,7 +46,7 @@ class Params:
     curpos = 0
     queue_pl_size = 10
     queue_cp_size = 10
-    interval = 0.01
+    interval = 0.3
     inst = ''
     date = ''
     data_len = 1024

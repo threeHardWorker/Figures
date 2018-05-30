@@ -39,9 +39,11 @@ class Artist:
         self.lNow, = self.ax.plot([], [], lw=1, color='green')
         self.lBest_pl, = self.ax.plot([], [], lw=1, color=change_pnt_color)
         self.lTop, = self.ax.plot([], [], lw=1, color='black')
+        self.lHTop, = self.ax.plot([], [], lw=1, color='red')
+        self.lHTail, = self.ax.plot([], [], lw=1, color='green')
 
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
-                      self.lBest_pl, self.lTop]
+                      self.lBest_pl, self.lTop, self.lHTop, self.lHTail]
 
     def init_animation(self):
         for line in self.lines:
@@ -114,6 +116,21 @@ class Artist:
                                list(self.ax.get_ylim()))
         else:
             self.lTop.set_data([], [])
+
+        val = []
+        ret = self.dcplp.get_top_val(self.level, val)
+        if ret == 2:
+            self.lHTop.set_data(list(self.ax.get_xlim()),
+                                [val[0], val[0]])
+            self.lHTail.set_data(list(self.ax.get_xlim()),
+                                 [val[1], val[1]])
+        elif ret >= 1:
+            self.lHTop.set_data([], [])
+            self.lHTail.set_data(list(self.ax.get_xlim()),
+                                 [val[0], val[0]])
+        else:
+            self.lHTop.set_data([], [])
+            self.lHTail.set_data([], [])
 
     def animate(self, cur_pos, show_future):
         # update the price data
