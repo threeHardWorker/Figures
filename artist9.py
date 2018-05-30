@@ -39,8 +39,8 @@ class Artist9:
         self.lNow, = self.ax.plot([], [], lw=1, color='green')
         self.lBest_pl, = self.ax.plot([], [], lw=1, color=change_pnt_color)
         self.lTop, = self.ax.plot([], [], lw=1, color='black')
-        self.lHTop, = self.ax.plot([], [], lw=1, color='red')
-        self.lHTail, = self.ax.plot([], [], lw=1, color='green')
+        self.lHTop, = self.ax.plot([], [], lw=1, color='red', linestyle=':')
+        self.lHTail, = self.ax.plot([], [], lw=1, color='green', linestyle=':')
 
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
                       self.lBest_pl, self.lTop, self.lHTop, self.lHTail]
