@@ -115,6 +115,7 @@ class Artist9:
             self.lTop.set_data([], [])
 
         val = []
+
         ret = self.dcplp.get_top_val(self.level, val)
         if ret == 2:
             self.lHTop.set_data(list(self.ax.get_xlim()),
