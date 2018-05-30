@@ -69,7 +69,9 @@ class SubplotAnimation9(animation.TimedAnimation):
             if self.region[i].in_rect(event.x, event.y):
                 di = int(math.pow(2, i))
                 spos = int(event.xdata * di)
-                print i, ': (', spos, '~', spos + di, '), ', event.ydata
+                print '%d:( %d - %d), %.02f -> %.02f'\
+                      % (i, spos, spos + di,
+                         event.ydata, self.m12.hop_to_price(event.ydata))
 
     def on_resize(self, event):
         # print 'on_resize'
