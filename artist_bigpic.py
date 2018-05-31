@@ -70,7 +70,7 @@ class ArtistBigPicture:
             self.ax.set_ylim([min(self.price[int(x_lim[0]): cp]),
                               max(self.price[int(x_lim[0]): cp])])
 
-    def update_lines(self, cp, show_future):
+    def update_lines(self, cp, show_future, toggle):
         self.max_x = []
         self.max_y = []
         self.min_x = []
@@ -115,36 +115,48 @@ class ArtistBigPicture:
         else:
             self.lBest_pl.set_data([], [])
 
-        for i in range(0, 12):
-            val = []
-            ret = self.dcplp.get_top_val(i, val)
-            if ret == 2:
-                self.set_ylim(val)
-                self.lHTop[i].set_data(list(self.ax.get_xlim()),
-                                       [val[0], val[0]])
-                self.lHTail[i].set_data(list(self.ax.get_xlim()),
-                                        [val[1], val[1]])
-            elif ret >= 1:
-                self.set_ylim(val)
-                self.lHTop[i].set_data([], [])
-                self.lHTail[i].set_data(list(self.ax.get_xlim()),
-                                        [val[0], val[0]])
-            else:
+        if toggle:
+            hv = []
+            self.dcplp.get_horizon_val(hv)
+            len_hv = len(hv)
+            self.set_ylim(hv)
+            for i in range(0, len_hv):
+                self.lHTop[i].set_data(list(self.ax.get_xlim()), [hv[i], hv[i]])
+                self.lHTail[i].set_data([], [])
+            for i in range(len_hv, 12):
                 self.lHTop[i].set_data([], [])
                 self.lHTail[i].set_data([], [])
-
-        self.top_pos = self.dcplp.get_top_pos(self.level)
-        if self.top_pos > 0:
-            self.lTop.set_data([self.top_pos, self.top_pos],
-                               list(self.ax.get_ylim()))
         else:
-            self.lTop.set_data([], [])
+            for i in range(0, 12):
+                val = []
+                ret = self.dcplp.get_top_val(i, val)
+                if ret == 2:
+                    self.set_ylim(val)
+                    self.lHTop[i].set_data(list(self.ax.get_xlim()),
+                                           [val[0], val[0]])
+                    self.lHTail[i].set_data(list(self.ax.get_xlim()),
+                                            [val[1], val[1]])
+                elif ret >= 1:
+                    self.set_ylim(val)
+                    self.lHTop[i].set_data([], [])
+                    self.lHTail[i].set_data(list(self.ax.get_xlim()),
+                                            [val[0], val[0]])
+                else:
+                    self.lHTop[i].set_data([], [])
+                    self.lHTail[i].set_data([], [])
 
-    def animate(self, cur_pos, show_future):
+            self.top_pos = self.dcplp.get_top_pos(self.level)
+            if self.top_pos > 0:
+                self.lTop.set_data([self.top_pos, self.top_pos],
+                                   list(self.ax.get_ylim()))
+            else:
+                self.lTop.set_data([], [])
+
+    def animate(self, cur_pos, show_future, toggle):
         cp = cur_pos / self.down_int - 1
         x_lim = list(self.ax.get_xlim())
         self.update_limit(x_lim, cp, show_future)
-        self.update_lines(cp, show_future)
+        self.update_lines(cp, show_future, toggle)
         return tuple(self.lines)
 
     def update(self, cur_pos, show_future=True):
