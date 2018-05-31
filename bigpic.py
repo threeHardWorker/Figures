@@ -142,7 +142,7 @@ if __name__ == "__main__":
     t_figure.start()
 
     # params.curpos += 1
-    params.run_status = 1
+    params.run_status = 0
 
     print 'Press X and Close figure to quit'
     while params.run_status >= 0 and params.curpos <= epos:
