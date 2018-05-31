@@ -7,13 +7,14 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 
 import artist9
+import artist_bigpic
 import par
 
 libc = ctypes.CDLL(ctypes.util.find_library('c'))
 libc.free.argtypes = (ctypes.c_void_p,)
 
 
-class SubplotAnimation9(animation.TimedAnimation):
+class SubplotAnimation9:
     def __init__(self, m12, params, dcplp, stop_pos):
         self.fig = plt.figure(0, figsize=(16, 9))
         self.ax = [self.fig.add_subplot(3, 4, 1),
@@ -32,7 +33,7 @@ class SubplotAnimation9(animation.TimedAnimation):
         self.region = [par.Rect() for _ in range(12)]
         self.fig.tight_layout()
         self.params = params
-        self.fig.canvas.set_window_title(params.inst)
+        self.fig.canvas.set_window_title(params.inst + ' m12')
 
         self.m12 = m12
         self.dcplp = dcplp
@@ -52,17 +53,32 @@ class SubplotAnimation9(animation.TimedAnimation):
         self.fig.canvas.mpl_connect('resize_event', self.on_resize)
         self.fig.canvas.mpl_connect('button_press_event', self.onclick)
 
-        # self.fig.canvas.mpl_connect('button_press_event', self.onClick)
         self.event_source = self.fig.canvas.new_timer()
         self.event_source.interval = self.anim_interval
 
         self.fig2 = plt.figure(1, figsize=(16, 9))
-        self.ax2 = [self.fig2.add_subplot(1, 1, 1)]
+        self.ax2 = self.fig2.add_subplot(1, 1, 1)
+        self.fig2.tight_layout()
+        self.fig2.canvas.set_window_title(params.inst + ' bigpic')
+        self.region2 = par.Rect()
 
-        animation.TimedAnimation.__init__(self, self.fig, interval=self.anim_interval,
-                                          event_source=self.event_source, blit=True)
-        animation.TimedAnimation.__init__(self, self.fig2, interval=self.anim_interval,
-                                          event_source=self.event_source, blit=True)
+        self.art2 = artist_bigpic.ArtistBigPicture(m12, dcplp, self.ax2, "bigpic", 7)
+        self.fig2.canvas.mpl_connect('key_press_event', self.press)
+        self.fig2.canvas.mpl_connect('close_event', self.handle_close)
+        self.fig2.canvas.mpl_connect('resize_event', self.on_resize2)
+        self.fig2.canvas.mpl_connect('button_press_event', self.onclick2)
+        # animation.TimedAnimation.__init__(self, self.fig, interval=self.anim_interval,
+        #                                   event_source=self.event_source, blit=True)
+        # animation.TimedAnimation.__init__(self, self.fig2, interval=self.anim_interval,
+        #                                  event_source=self.event_source, blit=True)
+        self.ani1 = animation.FuncAnimation(self.fig, self.draw_frame_1, self.params.all_len,
+                                            init_func=self.init_draw_1,
+                                            interval=self.anim_interval,
+                                            blit=True)
+        self.ani2 = animation.FuncAnimation(self.fig2, self.draw_frame_2, self.params.all_len,
+                                            init_func=self.init_draw_2,
+                                            interval=self.anim_interval,
+                                            blit=True)
 
     def onclick(self, event):
         # print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
@@ -77,6 +93,18 @@ class SubplotAnimation9(animation.TimedAnimation):
                       % (i, pos, pos + di, minutes,
                          event.ydata, self.m12.hop_to_price(event.ydata))
 
+    def onclick2(self, event):
+        # print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
+        #      ('double' if event.dblclick else 'single', event.button,
+        #       event.x, event.y, event.xdata, event.ydata))
+        if self.region2.in_rect(event.x, event.y):
+            di = int(math.pow(2, 7))
+            pos = int(event.xdata * di)
+            minutes = int((pos - self.cur_pos) * 5 / 60)
+            print '( %d - %d) %d, %.02f -> %.02f'\
+                  % (pos, pos + di, minutes,
+                     event.ydata, self.m12.hop_to_price(event.ydata))
+
     def on_resize(self, event):
         # print 'on_resize'
         for i in range(12):
@@ -87,48 +115,19 @@ class SubplotAnimation9(animation.TimedAnimation):
         if self.event_source is not None:
             self.event_source.stop()
 
-    def handle_close(self, event):
+    def on_resize2(self, event):
+        # print 'on_resize'
+        bbox = self.ax2.get_window_extent().\
+            transformed(self.fig2.dpi_scale_trans.inverted())
+        d = self.fig2.dpi
+        self.region2.set_rect(bbox.x0 * d, bbox.y0 * d, bbox.x1 * d, bbox.y1 * d)
+
         if self.event_source is not None:
             self.event_source.stop()
 
-    def jump(self, pos):
-        self.params.run_status = 0
-        time.sleep(0.25)
-        if pos > 10 or pos < 0:
-            for art in self.art:
-                art.clean_predict_lines()
-
-            self.m12.ph_clear()
-            self.m12.do_math(self.params.curpos)
-
-        self.params.curpos += pos
-
-    def next_stop(self, delta):
-        if self.stop_pos is None:
-            return
-
-        self.params.run_status = 0
-        time.sleep(0.25)
-
-        if self.params.curpos < self.stop_pos[0]:
-            self.params.curpos = self.stop_pos[0] - 2
-            self.params.run_status = 1
-            return
-
-        for i in range(0, len(self.stop_pos) - 1):
-            if self.stop_pos[i] <= self.params.curpos < self.stop_pos[i + 1]:
-                if delta < 0:
-                    self.params.curpos = self.stop_pos[i] - 2
-                    # print 'jump to ', self.params.curpos
-                    self.params.run_status = 1
-                elif delta > 0:
-                    self.params.curpos = self.stop_pos[i + 1] - 2
-                    # print 'jump to ', self.params.curpos
-                    self.params.run_status = 1
-                return
-
-        self.params.curpos = self.stop_pos[-1] - 2
-        self.params.run_status = 1
+    def handle_close(self, event):
+        if self.event_source is not None:
+            self.event_source.stop()
 
     def press(self, event):
         # print event.key
@@ -182,16 +181,22 @@ class SubplotAnimation9(animation.TimedAnimation):
         elif event.key == 'e':
             self.m12.show_predict_detail(-1)
 
-    def _draw_frame(self, framedata):
+    def draw_frame_1(self, framedata):
         self.cur_pos = self.params.curpos
+        drawn_artists = ()
+        for artist in self.art:
+            drawn_artists += artist.animate(self.cur_pos, self.show_future)
+        return drawn_artists
 
-        self._drawn_artists = ()
-        for i in range(0, 12):
-            self._drawn_artists += self.art[i].animate(self.cur_pos, self.show_future)
+    def init_draw_1(self):
+        lines = []
+        for artist in self.art:
+            lines += artist.init_animation()
+        return tuple(lines)
 
-    def new_frame_seq(self):
-        return iter(range(self.params.all_len))
+    def draw_frame_2(self, framedata):
+        self.cur_pos = self.params.curpos
+        return self.art2.animate(self.cur_pos, self.show_future)
 
-    def _init_draw(self):
-        for i in range(0, 12):
-            self.art[i].init_animation()
+    def init_draw_2(self):
+        return tuple(self.art2.init_animation())

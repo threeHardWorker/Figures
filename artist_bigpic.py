@@ -4,7 +4,7 @@ m_data_len = 1024
 m_predict_len = 128
 
 
-class Artist9:
+class ArtistBigPicture:
     def __init__(self, m12, dcplp, ax, name, level):
         self.m12 = m12
         self.dcplp = dcplp
@@ -39,28 +39,36 @@ class Artist9:
         self.lNow, = self.ax.plot([], [], lw=1, color='green')
         self.lBest_pl, = self.ax.plot([], [], lw=1, color=change_pnt_color)
         self.lTop, = self.ax.plot([], [], lw=1, color='black')
-        self.lHTop, = self.ax.plot([], [], lw=1, color='red', linestyle=':')
-        self.lHTail, = self.ax.plot([], [], lw=1, color='green', linestyle=':')
+
+        self.lHTop = []
+        self.lHTail = []
 
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
-                      self.lBest_pl, self.lTop, self.lHTop, self.lHTail]
+                      self.lBest_pl, self.lTop]
+        for i in range(0, 12):
+            top, = self.ax.plot([], [], lw=1, color='red', linestyle=':')
+            tail, = self.ax.plot([], [], lw=1, color='green', linestyle=':')
+            self.lHTop.append(top)
+            self.lHTail.append(tail)
+            self.lines.append(self.lHTop[i])
+            self.lines.append(self.lHTail[i])
 
     def init_animation(self):
         for line in self.lines:
             line.set_data([], [])
         return self.lines
 
-    def update_limit(self, xlim, cp, show_future):
-        xlim[0] = cp - m_data_len
-        xlim[1] = cp + m_predict_len
-        self.ax.set_xlim(xlim)
+    def update_limit(self, x_lim, cp, show_future):
+        x_lim[0] = cp - m_data_len
+        x_lim[1] = cp + m_predict_len
+        self.ax.set_xlim(x_lim)
 
         if show_future:
-            self.ax.set_ylim([min(self.price[int(xlim[0]): int(xlim[1])]),
-                           max(self.price[int(xlim[0]): int(xlim[1])])])
+            self.ax.set_ylim([min(self.price[int(x_lim[0]): int(x_lim[1])]),
+                           max(self.price[int(x_lim[0]): int(x_lim[1])])])
         else:
-            self.ax.set_ylim([min(self.price[int(xlim[0]): cp]),
-                              max(self.price[int(xlim[0]): cp])])
+            self.ax.set_ylim([min(self.price[int(x_lim[0]): cp]),
+                              max(self.price[int(x_lim[0]): cp])])
 
     def update_lines(self, cp, show_future):
         self.max_x = []
@@ -76,8 +84,8 @@ class Artist9:
                                self.price[cp - m_data_len: cp])
 
         if show_future:
-            dlen = len(self.price[cp: cp + m_predict_len])
-            self.lFuture.set_data(self.allx[cp: cp + dlen],
+            data_len = len(self.price[cp: cp + m_predict_len])
+            self.lFuture.set_data(self.allx[cp: cp + data_len],
                                   self.price[cp: cp + m_predict_len])
         else:
             self.lFuture.set_data([], [])
@@ -114,26 +122,27 @@ class Artist9:
         else:
             self.lTop.set_data([], [])
 
-        val = []
-
-        ret = self.dcplp.get_top_val(self.level, val)
-        if ret == 2:
-            self.lHTop.set_data(list(self.ax.get_xlim()),
-                                [val[0], val[0]])
-            self.lHTail.set_data(list(self.ax.get_xlim()),
-                                 [val[1], val[1]])
-        elif ret >= 1:
-            self.lHTop.set_data([], [])
-            self.lHTail.set_data(list(self.ax.get_xlim()),
-                                 [val[0], val[0]])
-        else:
-            self.lHTop.set_data([], [])
-            self.lHTail.set_data([], [])
+        for i in range(0, 12):
+            val = []
+            ret = self.dcplp.get_top_val(i, val)
+            if ret == 2:
+                self.set_ylim(val)
+                self.lHTop[i].set_data(list(self.ax.get_xlim()),
+                                       [val[0], val[0]])
+                self.lHTail[i].set_data(list(self.ax.get_xlim()),
+                                        [val[1], val[1]])
+            elif ret >= 1:
+                self.set_ylim(val)
+                self.lHTop[i].set_data([], [])
+                self.lHTail[i].set_data(list(self.ax.get_xlim()),
+                                        [val[0], val[0]])
+            else:
+                self.lHTop[i].set_data([], [])
+                self.lHTail[i].set_data([], [])
 
     def animate(self, cur_pos, show_future):
         cp = cur_pos / self.down_int - 1
         x_lim = list(self.ax.get_xlim())
-        # ylim = list(self.ax.get_ylim())
         self.update_limit(x_lim, cp, show_future)
         self.update_lines(cp, show_future)
         return tuple(self.lines)
@@ -143,8 +152,13 @@ class Artist9:
         if cp >= len(self.price):
             return
 
-        xlim = list(self.ax.get_xlim())
-        # ylim = list(self.ax.get_ylim())
-        self.update_limit(xlim, cp, show_future)
-
+        x_lim = list(self.ax.get_xlim())
+        self.update_limit(x_lim, cp, show_future)
         self.update_lines(cp, show_future)
+
+    def set_ylim(self, val):
+        y_lim = list(self.ax.get_ylim())
+        for v in val:
+            y_lim[0] = min(y_lim[0], v)
+            y_lim[1] = max(y_lim[1], v)
+        self.ax.set_ylim(y_lim)
