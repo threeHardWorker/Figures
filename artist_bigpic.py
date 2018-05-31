@@ -115,13 +115,6 @@ class ArtistBigPicture:
         else:
             self.lBest_pl.set_data([], [])
 
-        self.top_pos = self.dcplp.get_top_pos(self.level)
-        if self.top_pos > 0:
-            self.lTop.set_data([self.top_pos, self.top_pos],
-                               list(self.ax.get_ylim()))
-        else:
-            self.lTop.set_data([], [])
-
         for i in range(0, 12):
             val = []
             ret = self.dcplp.get_top_val(i, val)
@@ -139,6 +132,13 @@ class ArtistBigPicture:
             else:
                 self.lHTop[i].set_data([], [])
                 self.lHTail[i].set_data([], [])
+
+        self.top_pos = self.dcplp.get_top_pos(self.level)
+        if self.top_pos > 0:
+            self.lTop.set_data([self.top_pos, self.top_pos],
+                               list(self.ax.get_ylim()))
+        else:
+            self.lTop.set_data([], [])
 
     def animate(self, cur_pos, show_future):
         cp = cur_pos / self.down_int - 1
