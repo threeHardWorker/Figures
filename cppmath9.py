@@ -1,8 +1,20 @@
+import datetime
+import gc
+import random
+import sys
+import threading
+import time
 from libnrlib import *
-import tmath, trade, animation9
+
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
-import sys, gc, threading, time, random, datetime
+
+import bigpic
+import tmath
+import trade
+
+
+global my_animation
 
 
 def read_pos_from_file(inst):
@@ -40,8 +52,8 @@ class FigureThread(threading.Thread):
         self.stop_pos = stop_pos
 
     def run(self):
-        ani_lines1 = animation9.SubplotAnimation9(self.m12, self.params, 0, self.dcplp, self.stop_pos)
-
+        global my_animation
+        my_animation = bigpic.SubplotAnimation9(self.m12, self.params, self.dcplp, self.stop_pos)
         # self.ani_dash = Dashboard(self.dm)
         plt.show()
 
@@ -132,6 +144,7 @@ if __name__ == "__main__":
     # params.curpos += 1
     params.run_status = 0
 
+    print 'Press X and Close figure to quit'
     while params.run_status >= 0 and params.curpos <= epos:
         if params.run_status == 1:
             m12.do_math(params.curpos)
@@ -145,5 +158,4 @@ if __name__ == "__main__":
 
         time.sleep(params.interval)
 
-    print 'Press X and Close figure to quit'
     t_figure.join()

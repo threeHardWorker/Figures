@@ -13,6 +13,7 @@ from matplotlib import rcParams
 import numpy as np
 
 import anim_ctpmdif
+import anim_bigpic
 import tmath
 import trade
 
@@ -20,6 +21,21 @@ import trade
 ctpif_cdll = cdll.LoadLibrary("libctpif.so")
 
 global watch_inst, params, g_array
+
+
+class BigPictureThread(threading.Thread):
+    def __init__(self, m12, params, dcplp):
+        super(FigureThread, self).__init__()
+        self.m12 = m12
+        self.params = params
+        self.dcplp = dcplp
+
+    def run(self):
+        ani_lines1 = anim_bigpic.SubplotAnimation(
+            self.m12, self.params, 0, self.dcplp, None)
+
+        # self.ani_dash = Dashboard(self.dm)
+        plt.show()
 
 
 class FigureThread(threading.Thread):
@@ -126,6 +142,10 @@ if __name__ == "__main__":
     t_figure.start()
     time.sleep(15)
 
+    t_bigpic = FigureThread(m12, params, dcpkp)
+    t_bigpic.start()
+    time.sleep(15)
+
     #
     # Get Ctp Data Reader
     #
@@ -184,4 +204,5 @@ if __name__ == "__main__":
     # close figure
     #
     print 'Press X and Close figure to quit'
+    t_bigpic.join()
     t_figure.join()
