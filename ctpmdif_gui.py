@@ -12,7 +12,7 @@ from matplotlib import rcParams
 
 import numpy as np
 
-import anim_ctpmdif
+# import anim_ctpmdif
 import anim_bigpic
 import tmath
 import trade
@@ -20,22 +20,7 @@ import trade
 # load dll
 ctpif_cdll = cdll.LoadLibrary("libctpif.so")
 
-global watch_inst, params, g_array
-
-
-class BigPictureThread(threading.Thread):
-    def __init__(self, m12, params, dcplp):
-        super(FigureThread, self).__init__()
-        self.m12 = m12
-        self.params = params
-        self.dcplp = dcplp
-
-    def run(self):
-        ani_lines1 = anim_bigpic.SubplotAnimation(
-            self.m12, self.params, 0, self.dcplp, None)
-
-        # self.ani_dash = Dashboard(self.dm)
-        plt.show()
+global watch_inst, params, g_array, my_animation
 
 
 class FigureThread(threading.Thread):
@@ -46,15 +31,15 @@ class FigureThread(threading.Thread):
         self.dcplp = dcplp
 
     def run(self):
-        ani_lines1 = anim_ctpmdif.SubplotAnimation(
-            self.m12, self.params, 0, self.dcplp, None)
+        global my_animation
+        my_animation = anim_bigpic.SubplotAnimation(
+            self.m12, self.params, self.dcplp, None)
 
-        # self.ani_dash = Dashboard(self.dm)
         plt.show()
 
 
 if __name__ == "__main__":
-    global watch_inst, params
+    global watch_inst, params, g_array, my_animation
 
     gc.disable()
     gc.enable()
@@ -142,10 +127,6 @@ if __name__ == "__main__":
     t_figure.start()
     time.sleep(15)
 
-    t_bigpic = FigureThread(m12, params, dcpkp)
-    t_bigpic.start()
-    time.sleep(15)
-
     #
     # Get Ctp Data Reader
     #
@@ -169,6 +150,8 @@ if __name__ == "__main__":
     reader_good = True
     da = ctpif.DataAmount()
     params.run_status = 1
+
+    print 'Press X and Close figure to quit'
 
     while params.run_status != -100 and reader_good:
         ret = ctpif.cc_new_data(long(reader), watch_inst, da)
@@ -203,6 +186,4 @@ if __name__ == "__main__":
     #
     # close figure
     #
-    print 'Press X and Close figure to quit'
-    t_bigpic.join()
     t_figure.join()

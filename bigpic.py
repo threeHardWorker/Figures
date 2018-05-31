@@ -53,7 +53,8 @@ class FigureThread(threading.Thread):
 
     def run(self):
         global my_animation
-        my_animation = anim_bigpic.SubplotAnimation9(self.m12, self.params, self.dcplp, self.stop_pos)
+        my_animation = anim_bigpic.SubplotAnimation9(
+            self.m12, self.params, self.dcplp, self.stop_pos)
         # self.ani_dash = Dashboard(self.dm)
         plt.show()
 
