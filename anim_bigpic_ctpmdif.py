@@ -5,8 +5,8 @@ from libnrlib import *
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 
-import artist9
-import artist_bigpic
+import artist_ctpmdif
+import artist_bigpic_ctpmdif
 import par
 
 
@@ -37,7 +37,8 @@ class SubplotAnimation9:
 
         self.art = []
         for i in range(12):
-            self.art.append(artist9.Artist9(m12, self.dcplp, self.ax[i], "art" + str(i), i))
+            self.art.append(artist_ctpmdif.Artist(
+                m12, self.dcplp, self.ax[i], "art" + str(i), i))
 
         self.anim_interval = 10
 
@@ -58,7 +59,8 @@ class SubplotAnimation9:
         self.fig2.canvas.set_window_title(params.inst + ' bigpic')
         self.region2 = par.Rect()
 
-        self.art2 = artist_bigpic.ArtistBigPicture(m12, dcplp, self.ax2, "bigpic", 7)
+        self.art2 = artist_bigpic_ctpmdif.ArtistBigPicture(
+            m12, dcplp, self.ax2, "big_pic", 7)
         self.fig2.canvas.mpl_connect('key_press_event', self.press_2)
         self.fig2.canvas.mpl_connect('close_event', self.handle_close)
         self.fig2.canvas.mpl_connect('resize_event', self.on_resize2)

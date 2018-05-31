@@ -140,7 +140,7 @@ class Artist:
         cp = cur_pos / self.down_int - 1
         if cp >= len(self.price):
             print "Error!"
-            return
+            return tuple()
 
         self.allx = list(range(0, len(self.price) + m_predict_len))
 
