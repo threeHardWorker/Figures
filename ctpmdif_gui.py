@@ -12,8 +12,8 @@ from matplotlib import rcParams
 
 import numpy as np
 
-# import anim_ctpmdif
-import anim_bigpic
+import anim_ctpmdif
+# import anim_bigpic
 import tmath
 import trade
 
@@ -32,8 +32,8 @@ class FigureThread(threading.Thread):
 
     def run(self):
         global my_animation
-        my_animation = anim_bigpic.SubplotAnimation9(
-            self.m12, self.params, self.dcplp, None)
+        my_animation = anim_ctpmdif.SubplotAnimation(
+            self.m12, self.params, 0, self.dcplp, None)
 
         plt.show()
 
