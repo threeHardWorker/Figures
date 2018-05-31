@@ -1,6 +1,4 @@
-import ctypes
 import math
-import time
 from libnrlib import *
 
 import matplotlib.animation as animation
@@ -8,9 +6,6 @@ import matplotlib.pyplot as plt
 
 import artist_ctpmdif
 import par
-
-libc = ctypes.CDLL(ctypes.util.find_library('c'))
-libc.free.argtypes = (ctypes.c_void_p,)
 
 
 class SubplotAnimation(animation.TimedAnimation):
