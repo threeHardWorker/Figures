@@ -165,16 +165,20 @@ if __name__ == "__main__":
             # print '%d, %d | %d > %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % (
             #     da.curpos, da.count, da.isnew, bar[0], bar[1], bar[2], bar[3],
             #     bar[4], bar[5], bar[6])
+            candle = CandleBar(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
+            if bar[0] > ftime:
+                m12.append(candle)
+            else:
+                m12.update(candle)
+
+            m12.do_math(params.curpos + 1)
+            dcplp.set_register(params.curpos + 1, m12)
+            m12.do_math(params.curpos + 2)
+            dcplp.set_register(params.curpos + 1, m12)
+
             if bar[0] > ftime:
                 ftime = bar[0]
-                candle = CandleBar(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
                 m12.append(candle)
-
-                m12.do_math(params.curpos + 1)
-                dcplp.set_register(params.curpos + 1, m12)
-                m12.do_math(params.curpos + 2)
-                dcplp.set_register(params.curpos + 1, m12)
-
                 params.curpos += 2
 
         time.sleep(0.01)
