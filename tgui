@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Usage: python ctpmdif_gui.py <instrument> <end the trade day>
+#                              <data file path> <config path>
+
+
+# DATE=`date '+%Y-%m-%d %H:%M:%S'`
+
+DATAPATH=/app/sean/data/tick_bindata
+CONFPATH=/app/sean/bin/gom/conf/gmd-9-lyj.json
+
+python tick_gui.py $1 $2 $DATAPATH $CONFPATH &
