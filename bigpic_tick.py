@@ -64,7 +64,7 @@ if __name__ == "__main__":
     gc.enable()
 
     if len(sys.argv) < 4 or len(sys.argv) > 6:
-        print 'Usage: python bigpic.py <instrument> <r|the end day> <data file path> [start pos] [end pos]\n'
+        print 'Usage: python bigpic_tick.py <instrument> <r|the end day> <data file path> [start pos] [end pos]\n'
         exit(0)
 
     instrument = sys.argv[1].encode('ascii')
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     # ppps.min_data_size = int(1024 * 2048 *1.005)
 
     m12.set_param(ppps)
-    all_len = m12.get_data_from_file(instrument, datapath, thedate, trade.get_hop(instrument))
+    all_len = m12.get_tick_from_file(instrument, datapath, thedate, trade.get_hop(instrument))
 
     trade.get_instrument_code(instrument)
 
