@@ -29,6 +29,7 @@ class ArtistBigPicture:
                           max(self.price[0: m_data_len])])
 
         change_pnt_color = (128.0 / 255.0, 28.0 / 255.0, 188.0 / 255.0)
+        prev_predict_color = (255.0 / 255.0, 147.0 / 255.0, 0)
 
         self.lmax, = self.ax.plot([], [], lw=1, color='green')
         self.lmin, = self.ax.plot([], [], lw=1, color='green')
@@ -53,7 +54,7 @@ class ArtistBigPicture:
             self.lines.append(self.lHTop[i])
             self.lines.append(self.lHTail[i])
 
-        self.lPrevPredict, = self.ax.plot([], [], lw=1, color='green')
+        self.lPrevPredict, = self.ax.plot([], [], lw=1, color=prev_predict_color)
         self.lines.append(self.lPrevPredict)
 
     def init_animation(self):

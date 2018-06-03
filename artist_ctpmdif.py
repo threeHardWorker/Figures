@@ -29,6 +29,7 @@ class Artist:
                           max(self.price[0: m_data_len])])
 
         change_pnt_color = (128.0 / 255.0, 28.0 / 255.0, 188.0 / 255.0)
+        prev_predict_color = (255.0 / 255.0, 147.0 / 255.0, 0)
 
         self.lmax, = self.ax.plot([], [], lw=1, color='green')
         self.lmin, = self.ax.plot([], [], lw=1, color='green')
@@ -45,7 +46,7 @@ class Artist:
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
                       self.lBest_pl, self.lTop, self.lHTop, self.lHTail]
 
-        self.lPrevPredict, = self.ax.plot([], [], lw=1, color='green')
+        self.lPrevPredict, = self.ax.plot([], [], lw=1, color=prev_predict_color)
         self.lines.append(self.lPrevPredict)
 
     def init_animation(self):
