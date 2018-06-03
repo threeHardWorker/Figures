@@ -45,6 +45,9 @@ class Artist:
         self.lines = [self.lmax, self.lmin, self.lCurrent, self.lFuture, self.lNow, self.lp_hi, self.appx,
                       self.lBest_pl, self.lTop, self.lHTop, self.lHTail]
 
+        self.lPrevPredict, = self.ax.plot([], [], lw=1, color='green')
+        self.lines.append(self.lPrevPredict)
+
     def init_animation(self):
         for line in self.lines:
             line.set_data([], [])
@@ -132,6 +135,13 @@ class Artist:
         else:
             self.lHTop.set_data([], [])
             self.lHTail.set_data([], [])
+
+        pa = PredictAttr()
+        ret = self.dcplp.get_previous_predict_attr(pa)
+        if ret == 0:
+            self.lPrevPredict.set_data([], [])
+        else:
+            print "PREV PA: ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
 
     def animate(self, cur_pos, show_future):
         # update the price data

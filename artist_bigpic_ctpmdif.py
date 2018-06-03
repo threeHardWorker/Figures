@@ -53,6 +53,9 @@ class ArtistBigPicture:
             self.lines.append(self.lHTop[i])
             self.lines.append(self.lHTail[i])
 
+        self.lPrevPredict, = self.ax.plot([], [], lw=1, color='green')
+        self.lines.append(self.lPrevPredict)
+
     def init_animation(self):
         for line in self.lines:
             line.set_data([], [])
@@ -146,6 +149,13 @@ class ArtistBigPicture:
                                    list(self.ax.get_ylim()))
             else:
                 self.lTop.set_data([], [])
+
+        pa = PredictAttr()
+        ret = self.dcplp.get_previous_predict_attr(pa)
+        if ret == 0:
+            self.lPrevPredict.set_data([], [])
+        else:
+            print "PREV PA: ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
 
     def animate(self, cur_pos, show_future, toggle):
         del self.price[:]
