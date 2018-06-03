@@ -152,7 +152,6 @@ if __name__ == "__main__":
 
     print 'Press X and Close figure to quit'
 
-    ftime = 0
     while params.run_status != -100 and reader_good:
         ret = ctpif.cc_new_data(long(reader), watch_inst, da)
         if ret < 0:
@@ -166,20 +165,14 @@ if __name__ == "__main__":
             #     da.curpos, da.count, da.isnew, bar[0], bar[1], bar[2], bar[3],
             #     bar[4], bar[5], bar[6])
             candle = CandleBar(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
-            if bar[0] > ftime:
-                m12.append(candle)
-            else:
-                m12.update(candle)
+            m12.append(candle)
 
             m12.do_math(params.curpos + 1)
             dcplp.set_register(params.curpos + 1, m12)
             m12.do_math(params.curpos + 2)
             dcplp.set_register(params.curpos + 1, m12)
 
-            if bar[0] > ftime:
-                ftime = bar[0]
-                m12.append(candle)
-                params.curpos += 2
+            params.curpos += 2
 
         time.sleep(0.01)
 

@@ -178,7 +178,6 @@ if __name__ == "__main__":
 
             if bar[0] > ftime:
                 ftime = bar[0]
-                m12.append(candle)
                 params.curpos += 2
 
         time.sleep(0.01)
