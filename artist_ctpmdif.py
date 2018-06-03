@@ -29,7 +29,7 @@ class Artist:
                           max(self.price[0: m_data_len])])
 
         change_pnt_color = (128.0 / 255.0, 28.0 / 255.0, 188.0 / 255.0)
-        prev_predict_color = (255.0 / 255.0, 147.0 / 255.0, 0)
+        prev_predict_color = (0, 150.0 / 255.0, 1)
 
         self.lmax, = self.ax.plot([], [], lw=1, color='green')
         self.lmin, = self.ax.plot([], [], lw=1, color='green')
