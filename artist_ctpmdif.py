@@ -141,8 +141,25 @@ class Artist:
         if ret == 0:
             self.lPrevPredict.set_data([], [])
         else:
-            print "PREV PA type: ", pa.type, " Level: ", self.level,\
-                " Values: ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
+            # print "PREV PA type: ", pa.type, " Level: ", self.level,\
+            #    " Values: ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
+            if 3 >= pa.type > 0:
+                self.lPrevPredict.set_data([pa.cp, pa.cp + pa.epos], [pa.sval, pa.eval])
+            elif pa.type >= 4:
+                self.lPrevPredict.set_data([pa.cp, pa.cp + pa.ipos, pa.cp + pa.epos],
+                                           [pa.sval, pa.ival, pa.eval])
+            else:
+                self.lPrevPredict.set_data([], [])
+            '''
+                #define  PREDICT_LINE_TYPE_UNKNOW          0
+                #define  PREDICT_LINE_TYPE_FLAT            1
+                #define  PREDICT_LINE_TYPE_UP              2
+                #define  PREDICT_LINE_TYPE_DOWN            3
+                #define  PREDICT_LINE_TYPE_CONVEX          4
+                #define  PREDICT_LINE_TYPE_CONCAVE         5
+                #define  PREDICT_LINE_TYPE_UP_CONVEX       6
+                #define  PREDICT_LINE_TYPE_DOWN_CONCAVE    7
+            '''
 
     def animate(self, cur_pos, show_future):
         # update the price data
