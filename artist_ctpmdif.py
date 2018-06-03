@@ -141,7 +141,7 @@ class Artist:
         if ret == 0:
             self.lPrevPredict.set_data([], [])
         else:
-            print "PREV PA: ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
+            print "PREV PA type: ", pa.type, " : ", pa.spos, pa.sval, pa.epos, pa.eval, pa.ipos, pa.ival
 
     def animate(self, cur_pos, show_future):
         # update the price data
