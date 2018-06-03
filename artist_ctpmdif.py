@@ -137,7 +137,7 @@ class Artist:
             self.lHTail.set_data([], [])
 
         pa = PredictAttr()
-        ret = self.dcplp.get_previous_predict_attr(pa)
+        ret = self.dcplp.get_previous_predict_attr(pa, self.level)
         if ret == 0:
             self.lPrevPredict.set_data([], [])
         else:
