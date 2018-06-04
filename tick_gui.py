@@ -113,11 +113,13 @@ if __name__ == "__main__":
         rcParams[key] = value
 
     params.curpos = start_pos
+    print params.curpos, '1'
     while params.curpos <= end_pos:
         m12.do_math(params.curpos)
         dcplp.set_register(params.curpos, m12)
         params.curpos += 1
     params.curpos -= 1
+    print params.curpos, '2'
 
     #
     # start figure gui
