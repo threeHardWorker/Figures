@@ -114,9 +114,10 @@ if __name__ == "__main__":
 
     params.curpos = start_pos
     while params.curpos <= end_pos:
-        m12.do_math(params.curpos)
-        dcplp.set_register(params.curpos, m12)
         print params.curpos, '2'
+        m12.do_math(params.curpos)
+        print params.curpos, '3'
+        dcplp.set_register(params.curpos, m12)
         params.curpos += 1
     params.curpos -= 1
 
