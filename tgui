@@ -9,4 +9,4 @@
 DATAPATH=/app/sean/data/tick_bindata
 CONFPATH=/app/sean/bin/gom/conf/gmd-9-lyj.json
 
-python tick_gui.py $1 $2 $DATAPATH $CONFPATH &
+python tick_gui.py $1 20180601 $DATAPATH $CONFPATH &
