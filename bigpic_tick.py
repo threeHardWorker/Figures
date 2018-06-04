@@ -89,7 +89,7 @@ if __name__ == "__main__":
     # ppps.min_data_size = int(1024 * 2048 *1.005)
 
     m12.set_param(ppps)
-    all_len = m12.get_tick_to_last(datapath, trade.get_hop(instrument))
+    all_len = m12.get_tick_from_file(datapath, thedate, trade.get_hop(instrument))
 
     trade.get_instrument_code(instrument)
 
