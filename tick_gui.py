@@ -72,7 +72,7 @@ if __name__ == "__main__":
     nr_params.min_data_size = int(1024 * 2048 * 1.002)
 
     m12.set_param(nr_params)
-    all_len = m12.get_tick_to_last(data_path, the_date, trade.get_hop(instrument))
+    all_len = m12.get_tick_to_last(data_path, trade.get_hop(instrument))
 
     #
     # Get Start position of index and Ending-position of index
