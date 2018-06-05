@@ -15,7 +15,7 @@ libc.free.argtypes = (ctypes.c_void_p,)
 
 
 class SubplotAnimation9:
-    def __init__(self, m12, params, dcplp, stop_pos):
+    def __init__(self, m12, params, dcplp, stop_pos, period):
         self.fig = plt.figure(0, figsize=(16, 9))
         self.ax = [self.fig.add_subplot(3, 4, 1),
                    self.fig.add_subplot(3, 4, 2),
@@ -33,7 +33,7 @@ class SubplotAnimation9:
         self.region = [par.Rect() for _ in range(12)]
         self.fig.tight_layout()
         self.params = params
-        self.fig.canvas.set_window_title(params.inst + ' m12 - 10s')
+        self.fig.canvas.set_window_title(params.inst + ' m12' + period)
 
         self.m12 = m12
         self.dcplp = dcplp
@@ -59,7 +59,7 @@ class SubplotAnimation9:
         self.fig2 = plt.figure(1, figsize=(16, 9))
         self.ax2 = self.fig2.add_subplot(1, 1, 1)
         self.fig2.tight_layout()
-        self.fig2.canvas.set_window_title(params.inst + ' bigpic - 10s')
+        self.fig2.canvas.set_window_title(params.inst + ' bigpic' + period)
         self.region2 = par.Rect()
 
         self.art2 = artist_bigpic.ArtistBigPicture(m12, dcplp, self.ax2, "bigpic", 7)

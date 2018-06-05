@@ -32,7 +32,7 @@ class FigureThread(threading.Thread):
     def run(self):
         global my_animation
         my_animation = anim_bigpic_ctpmdif.SubplotAnimation9(
-            self.m12, self.params, self.dcplp, None)
+            self.m12, self.params, self.dcplp, None, ' - 10s')
 
         plt.show()
 
