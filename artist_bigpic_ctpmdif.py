@@ -184,6 +184,7 @@ class ArtistBigPicture:
             print "Error!"
             return tuple()
 
+        del self.allx[:]
         self.allx = list(range(0, len(self.price) + m_predict_len))
 
         xlim = list(self.ax.get_xlim())
