@@ -89,6 +89,8 @@ if __name__ == "__main__":
 
     m12.set_param(ppps)
     all_len = m12.get_data_from_file(instrument, datapath, thedate, trade.get_hop(instrument))
+    if all_len < 0:
+        exit(-1)
 
     trade.get_instrument_code(instrument)
 

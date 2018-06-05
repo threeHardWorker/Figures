@@ -73,6 +73,8 @@ if __name__ == "__main__":
 
     m12.set_param(nr_params)
     all_len = m12.get_data_from_file(instrument, data_path, the_date, trade.get_hop(instrument))
+    if all_len < 0:
+        exit(-1)
 
     #
     # Get Start position of index and Ending-position of index
