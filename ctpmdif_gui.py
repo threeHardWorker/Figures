@@ -156,6 +156,7 @@ if __name__ == "__main__":
 
     ftime = 0
     while params.run_status != -100 and reader_good:
+        print params.run_status
         ret = ctpif.cc_new_data(long(reader), watch_inst, da)
         if ret < 0:
             reader_good = False
