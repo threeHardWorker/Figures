@@ -130,7 +130,7 @@ class SubplotAnimation9:
         # print event.key
         if event.key == 'x':
             self.event_source.stop()
-            self.params.run_status = -1
+            self.params.run_status = -100
             plt.close(self.fig)
             plt.close(self.fig2)
         elif event.key == 'o':
