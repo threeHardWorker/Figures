@@ -155,8 +155,7 @@ if __name__ == "__main__":
 
             if params.curpos in stop_pos:
                 time.sleep(0.5)
-                my_animation.save_figure()
-                print params.curpos,
+                # print params.curpos,
                 s = str(raw_input("Enter to continue:"))
 
             params.curpos += params.delta

@@ -257,5 +257,5 @@ class SubplotAnimation9:
     def save_figure(self):
         imgpath = '/home/sean/tmp/trade/' + self.params.inst + '-' \
                   + self.params.date + '-' + str(self.params.curpos) + '.png'
-        plt.savefig(imgpath)
+        self.fig.savefig(imgpath)
         print 'save to', imgpath
