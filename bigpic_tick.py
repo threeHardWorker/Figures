@@ -17,14 +17,14 @@ import trade
 global my_animation
 
 
-def read_pos_from_file(inst):
+def read_pos_from_file(file_path):
     s = False
     str_pos = []
-    # filepath = './logs/' + inst + '.log'
-    filepath = '/app/sean/bin/gom/bin/v6-logs/v6-4-6-logs/' + inst + '.log'
-    # filepath = '/app/sean/bin/gom/bin/v3-3-logs/' + inst + '.log'
+    # file_path = './logs/' + inst + '.log'
+    # file_path = '/app/sean/bin/gom/bin/v6-logs/v6-4-6-logs/' + inst + '.log'
+    # file_path = '/app/sean/bin/gom/bin/v3-3-logs/' + inst + '.log'
 
-    with open(filepath) as f:
+    with open(file_path) as f:
         for line in f:
             if s:
                 str_pos = line.split(',')
@@ -154,6 +154,7 @@ if __name__ == "__main__":
             dcplp.set_register(params.curpos, m12)
 
             if params.curpos in stop_pos:
+                time.sleep(0.5)
                 my_animation.save_figure()
                 print params.curpos,
                 s = str(raw_input("Enter to continue:"))

@@ -255,8 +255,6 @@ class SubplotAnimation9:
         return tuple(self.art2.init_animation())
 
     def save_figure(self):
-        time.sleep(0.5)
-        self.event_source.stop()
         imgpath = '/home/sean/tmp/trade/' + self.params.inst + '-' \
                   + self.params.date + '-' + str(self.params.curpos) + '.png'
         plt.savefig(imgpath)
