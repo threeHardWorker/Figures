@@ -154,6 +154,7 @@ if __name__ == "__main__":
             dcplp.set_register(params.curpos, m12)
 
             if params.curpos in stop_pos:
+                my_animation.save_figure()
                 print params.curpos,
                 s = str(raw_input("Enter to continue:"))
 
