@@ -179,6 +179,8 @@ class SubplotAnimation9:
             print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
         elif event.key == 'e':
             self.m12.show_predict_detail(-1)
+        elif event.key == 'u':
+            self.dcplp.print_keypos()
 
     def press_2(self, event):
         # print event.key
