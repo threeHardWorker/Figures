@@ -168,7 +168,7 @@ class SubplotAnimation9:
             self.event_source.stop()
             imgpath = '/home/sean/tmp/trade/' + self.params.inst + '-' \
                       + self.params.date + '-' + str(self.params.curpos) + '.png'
-            plt.savefig(imgpath)
+            self.fig.savefig(imgpath)
             print 'save to', imgpath
         elif event.key == 'p':
             self.params.run_status = 0
@@ -181,6 +181,8 @@ class SubplotAnimation9:
             self.m12.show_predict_detail(-1)
         elif event.key == 'u':
             self.dcplp.print_keypos()
+        elif event.key == 'k':
+            self.dcplp.print_horizonal_values();
 
     def press_2(self, event):
         # print event.key
@@ -221,8 +223,8 @@ class SubplotAnimation9:
             time.sleep(0.5)
             self.event_source.stop()
             imgpath = '/home/sean/tmp/trade/' + self.params.inst + '-' \
-                      + self.params.date + '-' + str(self.params.curpos) + '.png'
-            plt.savefig(imgpath)
+                      + self.params.date + '-' + str(self.params.curpos) + '-big.png'
+            self.fig2.savefig(imgpath)
             print 'save to', imgpath
         elif event.key == 'p':
             self.params.run_status = 0
@@ -233,6 +235,10 @@ class SubplotAnimation9:
             print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
         elif event.key == 'g':
             self.toggle = not self.toggle
+        elif event.key == 'u':
+            self.dcplp.print_keypos()
+        elif event.key == 'k':
+            self.dcplp.print_horizonal_values();
 
     def draw_frame_1(self, framedata):
         self.cur_pos = self.params.curpos
