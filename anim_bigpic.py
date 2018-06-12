@@ -43,7 +43,7 @@ class SubplotAnimation9:
         for i in range(12):
             self.art.append(artist9.Artist9(m12, self.dcplp, self.ax[i], "art" + str(i), i))
 
-        self.anim_interval = 10
+        self.anim_interval = 200
 
         self.cur_pos = self.params.data_len
         self.show_future = False  # True
@@ -173,16 +173,16 @@ class SubplotAnimation9:
         elif event.key == 'p':
             self.params.run_status = 0
             self.event_source.stop()
-        elif event.key == 'w':
-            tp = TrendPercent()
-            self.m12.get_trend_percent(tp)
-            print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
+        # elif event.key == 'w':
+        #    tp = TrendPercent()
+        #    self.m12.get_trend_percent(tp)
+        #    print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
         elif event.key == 'e':
             self.m12.show_predict_detail(-1)
         elif event.key == 'u':
             self.dcplp.print_keypos()
         elif event.key == 'k':
-            self.dcplp.print_horizonal_values();
+            self.dcplp.print_horizontal_values();
 
     def press_2(self, event):
         # print event.key
@@ -229,16 +229,16 @@ class SubplotAnimation9:
         elif event.key == 'p':
             self.params.run_status = 0
             self.event_source.stop()
-        elif event.key == 'w':
-            tp = TrendPercent()
-            self.m12.get_trend_percent(tp)
-            print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
+        # elif event.key == 'w':
+        #    tp = TrendPercent()
+        #    self.m12.get_trend_percent(tp)
+        #    print tp.up, tp.down, tp.chaos, tp.up_ch, tp.down_ch, tp.ch
         elif event.key == 'g':
             self.toggle = not self.toggle
         elif event.key == 'u':
             self.dcplp.print_keypos()
         elif event.key == 'k':
-            self.dcplp.print_horizonal_values();
+            self.dcplp.print_horizontal_values();
 
     def draw_frame_1(self, framedata):
         self.cur_pos = self.params.curpos
