@@ -1,1 +1,1 @@
-python ./bigpic_tick.py $1888 20171108 /app/sean/data/tick_bindata $2 $3
+python ./bigpic_tick.py $1888 20171108 /app/sean/data/bak/tick/online $2 $3
