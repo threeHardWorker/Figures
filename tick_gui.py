@@ -69,7 +69,7 @@ if __name__ == "__main__":
     nr_params = NRParams()
     m12 = Math12()
     dcplp = Dcplp()
-    nr_params.min_data_size = int(1024 * 2048 * 1.002)
+    nr_params.min_data_size = int(1024 * 2048 * 1.2618)
 
     m12.set_param(nr_params)
     all_len = m12.get_tick_to_last(data_path, trade.get_hop(instrument))
