@@ -167,7 +167,7 @@ if __name__ == "__main__":
             #     da.curpos, da.count, da.isnew, bar[0], bar[1], bar[2], bar[3],
             #     bar[4], bar[5], bar[6])
             ctpmd = CtpMd(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
-            m12.append(ctpmd)
+            m12.append_ctpmd(ctpmd)
 
             new_len = m12.get_hop_price_len(0)
             for i in range(params.curpos, new_len):
