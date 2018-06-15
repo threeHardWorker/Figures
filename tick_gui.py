@@ -132,13 +132,13 @@ if __name__ == "__main__":
     # Get Ctp Data Reader
     #
     print 'get reader'
-    reader = ctpif_cdll.cc_init_reader(conf_path)
+    reader = ctpif_cdll.cc_init_tick_reader(conf_path)
     # get max data length
-    data_length = ctpif_cdll.cc_get_maxlen(reader)
+    data_length = ctpif_cdll.cc_get_tick_maxlen(reader)
     print 'max data length ', data_length
 
     # get interface of buffer-pointer
-    cc_get_bufptr = ctpif_cdll.cc_get_bufptr
+    cc_get_bufptr = ctpif_cdll.cc_get_tick_bufptr
     cc_get_bufptr.restype = POINTER(c_double)
 
     # get buffer pointer to rb1801
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     print 'Press X and Close figure to quit'
 
     while params.run_status != -100 and reader_good:
-        ret = ctpif.cc_new_data(long(reader), watch_inst, da)
+        ret = ctpif.cc_new_tick_data(long(reader), watch_inst, da)
         if ret < 0:
             reader_good = False
             params.run_status = 0
@@ -166,8 +166,8 @@ if __name__ == "__main__":
             # print '%d, %d | %d > %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % (
             #     da.curpos, da.count, da.isnew, bar[0], bar[1], bar[2], bar[3],
             #     bar[4], bar[5], bar[6])
-            candle = CandleBar(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
-            m12.append(candle)
+            ctpmd = CtpMd(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
+            m12.append(ctpmd)
 
             new_len = m12.get_hop_price_len(0)
             for i in range(params.curpos, new_len):
