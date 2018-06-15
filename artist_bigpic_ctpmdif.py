@@ -181,8 +181,7 @@ class ArtistBigPicture:
         self.m12.get_hop_price(self.price, self.level)
         cp = cur_pos / self.down_int - 1
         if cp >= len(self.price):
-            print "Error!"
-            return tuple()
+            cp = len(self.price) - 1
 
         del self.allx[:]
         self.allx = list(range(0, len(self.price) + m_predict_len))

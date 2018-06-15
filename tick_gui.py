@@ -169,12 +169,12 @@ if __name__ == "__main__":
             candle = CandleBar(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
             m12.append(candle)
 
-            m12.do_math(params.curpos + 1)
-            dcplp.set_register(params.curpos + 1, m12)
-            m12.do_math(params.curpos + 2)
-            dcplp.set_register(params.curpos + 1, m12)
+            new_len = m12.get_hop_price_len(0)
+            for i in range(params.curpos, new_len):
+                m12.do_math(i)
+                dcplp.set_register(i, m12)
 
-            params.curpos += 2
+            params.curpos = new_len - 1
 
         time.sleep(0.01)
 

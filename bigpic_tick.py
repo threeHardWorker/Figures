@@ -129,7 +129,7 @@ if __name__ == "__main__":
         rcParams[key] = value
 
     inst_code = trade.get_instrument_code(instrument)
-    stop_pos = read_pos_from_file("/app/sean/data/tick_bindata/rbkp.txt")
+    stop_pos = read_pos_from_file("/app/sean/data/bak/tick/online/jmkp.txt")
     # stop_pos = []
 
     # spos = stop_pos[random.randint(0, len(stop_pos)- 10) + 5 - 1] - 1
