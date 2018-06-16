@@ -166,15 +166,16 @@ if __name__ == "__main__":
             # print '%d, %d | %d > %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % (
             #     da.curpos, da.count, da.isnew, bar[0], bar[1], bar[2], bar[3],
             #     bar[4], bar[5], bar[6])
-            ctpmd = CtpMd(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
-            m12.append_ctpmd(ctpmd)
+            if bar[2] < 1000000:     # and bar[3] < 10000000
+                ctpmd = CtpMd(bar[0], bar[1], bar[2], bar[3], bar[4], bar[5], bar[6])
+                m12.append_ctpmd(ctpmd)
 
-            new_len = m12.get_hop_price_len(0)
-            for i in range(params.curpos, new_len):
-                m12.do_math(i)
-                dcplp.set_register(i, m12)
+                new_len = m12.get_hop_price_len(0)
+                for i in range(params.curpos, new_len):
+                    m12.do_math(i)
+                    dcplp.set_register(i, m12)
 
-            params.curpos = new_len - 1
+                params.curpos = new_len - 1
 
         time.sleep(0.01)
 
