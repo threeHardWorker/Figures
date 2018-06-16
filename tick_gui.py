@@ -69,7 +69,7 @@ if __name__ == "__main__":
     nr_params = NRParams()
     m12 = Math12()
     dcplp = Dcplp()
-    nr_params.min_data_size = int(1024 * 2048 * 1.1618)
+    nr_params.min_data_size = int(1024 * 2048 * 1.2618)
 
     m12.set_param(nr_params)
     all_len = m12.get_tick_to_last(data_path, trade.get_hop(instrument))
@@ -171,10 +171,11 @@ if __name__ == "__main__":
                 m12.append_ctpmd(ctpmd)
 
                 new_len = m12.get_hop_price_len(0)
-                for i in range(params.curpos, new_len):
+                i = params.curpos + 1
+                while i < new_len:
                     m12.do_math(i)
                     dcplp.set_register(i, m12)
-
+                    i += 1
                 params.curpos = new_len - 1
 
         time.sleep(0.01)
