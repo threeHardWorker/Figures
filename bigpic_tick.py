@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
     inst_code = trade.get_instrument_code(instrument)
     # fpath = '/app/sean/data/bak/tick/online/' + instrument + '_kp.txt'
-    fpath = '/app/sean/tmp/v7-1-1/' + instrument + '-gom.log'
+    fpath = '/app/sean/tmp/v77-1-1/' + instrument + '-gom.log'
     stop_pos = read_pos_from_file(fpath)
     # stop_pos = []
 
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             if params.curpos in stop_pos:
                 time.sleep(0.5)
                 # print params.curpos,
-                s = str(raw_input("Enter to continue:"))
+                s = str(raw_input('%d : Enter to continue:' % params.curpos))
 
             params.curpos += params.delta
 
