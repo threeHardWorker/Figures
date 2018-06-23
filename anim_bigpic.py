@@ -88,8 +88,8 @@ class SubplotAnimation9:
                 di = int(math.pow(2, i))
                 pos = int(event.xdata * di)
                 minutes = int((pos - self.cur_pos) * 5 / 60)
-                print '%d:( %d - %d) T: %d, (%.02f -> %.02f)'\
-                      % (i, pos, pos + di, minutes,
+                print '%d:( %d - %d:%s) T: %d, (%.02f -> %.02f)'\
+                      % (i, pos, pos + di, self.m12.get_time_str(pos), minutes,
                          event.ydata, self.m12.hop_to_price(event.ydata))
 
     def onclick2(self, event):
