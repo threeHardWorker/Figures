@@ -26,6 +26,9 @@ if __name__ == "__main__":
 
     with open(log_path) as fp:
         for line in fp:
+            if line[0] == '[':
+                continue
+
             s = line.split(',')
             if len(s) == 11:
                 x.append(float(s[3]))
