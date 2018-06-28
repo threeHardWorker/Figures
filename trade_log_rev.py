@@ -4,8 +4,8 @@ from datetime import datetime
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print 'Usage: python trade_log_rev.py <instrument> <train|test> <version> <save filepath>\n'
+    if len(sys.argv) != 6:
+        print 'Usage: python trade_log_rev.py <instrument> <train|test> <version> <save filepath> <tick|10s>\n'
         exit(0)
 
     gc.disable()
@@ -21,11 +21,12 @@ if __name__ == "__main__":
     version = sys.argv[3].encode('ascii')
     data_set = sys.argv[2].encode('ascii')
     save_path = sys.argv[4].encode('ascii')
+    data_level = sys.argv[5].encode('ascii')
 
     if data_set == 'test':
-        log_path = '/app/sean/kp/q7-' + version + '-t/tick/' + instrument + '-gom.log'
+        log_path = '/app/sean/kp/q7-' + version + '-t/' + data_level+ '/' + instrument + '-gom.log'
     elif data_set == 'train':
-        log_path = '/app/sean/kp/q7-' + version + '/tick/' + instrument + '-gom.log'
+        log_path = '/app/sean/kp/q7-' + version + '/' + data_level + '/' + instrument + '-gom.log'
     else:
         exit(-1)
 
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     plt.plot(x, cls_rev)
     plt.show()
 
-    datapath = save_path + '/' + instrument + '-' + version + '-' + data_set + '.json'
+    datapath = save_path + '/' + instrument + '-' + version + '-' + data_set + '-' + data_level + '.json'
     with open(datapath, 'w') as fp:
         fp.write('[')
         fp.write(str_pair[0])
