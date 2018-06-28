@@ -4,8 +4,8 @@ from datetime import datetime
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print 'Usage: python trade_log_rev.py <instrument> <train|test> <version>\n'
+    if len(sys.argv) != 5:
+        print 'Usage: python trade_log_rev.py <instrument> <train|test> <version> <save filepath>\n'
         exit(0)
 
     gc.disable()
@@ -19,10 +19,15 @@ if __name__ == "__main__":
 
     instrument = sys.argv[1].encode('ascii')
     version = sys.argv[3].encode('ascii')
-    if sys.argv[2] == 'test':
+    data_set = sys.argv[2].encode('ascii')
+    save_path = sys.argv[4].encode('ascii')
+
+    if data_set == 'test':
         log_path = '/app/sean/kp/q7-' + version + '-t/tick/' + instrument + '-gom.log'
-    else:
+    elif data_set == 'train':
         log_path = '/app/sean/kp/q7-' + version + '/tick/' + instrument + '-gom.log'
+    else:
+        exit(-1)
 
     with open(log_path) as fp:
         for line in fp:
@@ -47,7 +52,7 @@ if __name__ == "__main__":
     plt.plot(x, cls_rev)
     plt.show()
 
-    datapath = 'data.echats-' + instrument
+    datapath = save_path + '/' + instrument + '-' + data_set + '.json'
     with open(datapath, 'w') as fp:
         fp.write('[')
         fp.write(str_pair[0])
