@@ -52,7 +52,7 @@ if __name__ == "__main__":
     plt.plot(x, cls_rev)
     plt.show()
 
-    datapath = save_path + '/' + instrument + '-' + data_set + '.json'
+    datapath = save_path + '/' + instrument + '-' + version + '-' + data_set + '.json'
     with open(datapath, 'w') as fp:
         fp.write('[')
         fp.write(str_pair[0])
